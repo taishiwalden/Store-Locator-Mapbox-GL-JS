@@ -1,0 +1,94 @@
+<!-- Taishi Walden Mapbox -->    
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Concatenate Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <!-- Add the `mapbox-gl-js` library to the page. This gives our JS code below access to the `mapboxgl` object -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js'></script>
+
+    <!-- Add some default styling for the map container & controls -->
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+
+  </head>
+  <body>
+
+    <!-- Add a #map element to the page, to serve as the map's container -->
+    <div id='map'></div>
+
+    <script>
+
+    // Set an access token to allow the browser to load the map from our account
+    // TODO replace this with YOUR access token!
+    mapboxgl.accessToken = 'pk.eyJ1IjoidGFpc2hpd2FsZGVuIiwiYSI6ImNrcXkzaWJvbzE0Zzgyd21mZHVjNDBvYmIifQ.E2__hXdmUMAPh2zjvGjJgw';
+
+    // Instantiate a new Map object to load the map itself
+        // camera options properties - https://docs.mapbox.com/help/glossary/camera/
+        
+    const map = new mapboxgl.Map({
+      style: 'mapbox://styles/taishiwalden/ckr1sqnff6y1y17pbyk8ixvi4', //TODO replace this with YOUR style URL! This tells the map       which style to use
+      container: 'map', // id of the container div we created above
+      center: [-122.3032, 47.652], // the location to display when the map first loads, I added the coords of Seattle
+      pitch: 40, // pitch in degrees
+      //bearing: -60, // bearing in degrees
+      zoom: 15 // the zoom level to display when the map first loads
+    });
+
+    var popup = new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat([-122.2983, 47.6544])
+        .setHTML('<h2 style="color:green;">Hey, its Taishi. Thanks for checking out my website!</h2><p> Click around to learn about me! </p>')     //purple text and popup
+        .addTo(map);
+        
+    // Part 4 code will go here
+    map.on('click', (event) => {
+        const clickedPoint = [event.lngLat.lng, event.lngLat.lat];
+
+        const location = {
+            center: clickedPoint,
+            zoom: map.getZoom(),
+            pitch: map.getPitch(),
+            bearing: map.getBearing(),
+            };
+ 
+        
+        /* map.flyTo(location);              so now the map DOES NOT Re-center the map when the user clicks */
+
+        const clicked = {
+            location: location
+        };
+
+        const clickedFeatures = map.queryRenderedFeatures(event.point, { layers: [ 'symbols']});
+
+        if (clickedFeatures.length > 0) {
+            clicked.title = clickedFeatures[0].properties.title;
+            clicked.description = clickedFeatures[0].properties.description;
+
+            const popup = new mapboxgl.Popup() // create the popup
+               .setLngLat(clicked.location.center) // position it at the clicked point
+               .setHTML('<h3>' + clicked.title + '</h3><p>' + clicked.description + '</p>') // add some HTML content
+               .addTo(map); // place the popup on the map
+        }
+
+        console.log(JSON.stringify(clicked, symbols, 2));
+        });
+        
+
+    </script>
+  </body>
+</html>
