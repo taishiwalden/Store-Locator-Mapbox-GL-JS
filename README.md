@@ -8,8 +8,10 @@ Created an interactive pub crawl map with bars and clubs in Ballard, Seattle. In
 * Mapbox GL JS SDK 
 * Mapbox Tiles API
 
+***
+### Product Demo
 https://user-images.githubusercontent.com/75241036/141236858-7886aa6f-c8fc-4202-8bf1-cb45f6595d8d.mp4
 
-## Deployment
+### Deployment
 Programmed dynamic integration with the website server, and made it responsive for different devices (desktop, tablet, mobile)
 ![Visneto-multi-device-clay-mockups-gray](https://user-images.githubusercontent.com/75241036/142137795-689c1a58-ee9e-4438-8e43-3bbd50aaa5b1.jpg)
